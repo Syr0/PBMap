@@ -41,7 +41,6 @@ CompilerEndIf
 
 EnableExplicit
 
-InitNetwork()
 UsePNGImageDecoder()
 UseJPEGImageDecoder()
 UsePNGImageEncoder()
@@ -72,6 +71,8 @@ DeclareModule PBMap
   #PB_MAP_REDRAW = #PB_EventType_FirstCustomValue + 1 
   #PB_MAP_RETRY  = #PB_EventType_FirstCustomValue + 2
   #PB_MAP_TILE_CLEANUP = #PB_EventType_FirstCustomValue + 3
+  
+  #ShowOSMCopyright = #True
   
   ;-*** Public structures
   Structure GeographicCoordinates
@@ -1289,7 +1290,7 @@ Module PBMap
               AbortHTTP(*Tile\Download)
             EndIf
         EndSelect
-        Delay(200) ; Frees CPU
+        Delay(1) ; Frees CPU
       Until Quit
     EndIf
     ; End of the memory cache access
@@ -2088,7 +2089,7 @@ Module PBMap
         DrawTiles(MapGadget, *Drawing, *PBMap\LayersList()\Name)
       EndIf
       If *PBMap\LayersList()\LayerType = 0 ; OSM
-        OSMCopyright = #True
+        OSMCopyright = #ShowOSMCopyright
       EndIf
     Next   
     If *PBMap\Options\ShowTrack
@@ -2874,9 +2875,9 @@ EndModule
  
 
 
-; IDE Options = PureBasic 6.00 Alpha 3 (Windows - x64)
-; CursorPosition = 2657
-; FirstLine = 766
-; Folding = --------------------
+; IDE Options = PureBasic 6.00 LTS (Windows - x64)
+; CursorPosition = 1292
+; FirstLine = 576
+; Folding = KAAAAAAA5AgAgC5Aphn+
 ; EnableThread
 ; EnableXP
