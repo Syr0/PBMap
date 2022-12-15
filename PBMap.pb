@@ -977,8 +977,8 @@ Module PBMap
       PreferenceGroup("OPTIONS")   
       \WheelMouseRelative = ReadPreferenceInteger("WheelMouseRelative", #True)
       \MaxMemCache        = ReadPreferenceInteger("MaxMemCache", 20480) ; 20 MiB, about 80 tiles in memory
-      \MaxThreads         = ReadPreferenceInteger("MaxThreads", 40)
-      \MaxDownloadSlots   = ReadPreferenceInteger("MaxDownloadSlots", 2)
+      \MaxThreads         = ReadPreferenceInteger("MaxThreads", 16)
+      \MaxDownloadSlots   = ReadPreferenceInteger("MaxDownloadSlots", 64)
       \TileLifetime       = ReadPreferenceInteger("TileLifetime", 1209600) ; about 2 weeks ;-1 = unlimited
       \Verbose            = ReadPreferenceInteger("Verbose", #False)
       \Warning            = ReadPreferenceInteger("Warning", #False)
@@ -1496,7 +1496,13 @@ Module PBMap
                 CacheFile = DirName + slash + Str(tiley) + ".png" 
             EndSelect          
           EndWith
+<<<<<<< Updated upstream
+=======
+          ;All Tiles are asked at once. Over and Over and Over until all were responded. Why not working of all the requests in parallel??
+
+>>>>>>> Stashed changes
           *timg = GetTile(MapGadget, key, URL, CacheFile)
+          
           If *timg And *timg\nImage
             If *PBMap\CallBackDrawTile
               ;CallFunctionFast(*PBMap\CallBackDrawTile, px, py, *timg\nImage)
@@ -2872,6 +2878,7 @@ Module PBMap
 
 EndModule
 
+<<<<<<< Updated upstream
  
 
 
@@ -2879,5 +2886,11 @@ EndModule
 ; CursorPosition = 1292
 ; FirstLine = 576
 ; Folding = KAAAAAAA5AgAgC5Aphn+
+=======
+; IDE Options = PureBasic 6.00 LTS (Windows - x64)
+; CursorPosition = 1290
+; FirstLine = 1278
+; Folding = --------------------
+>>>>>>> Stashed changes
 ; EnableThread
 ; EnableXP
