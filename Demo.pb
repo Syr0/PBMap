@@ -70,6 +70,7 @@ Enumeration
   #Gdt_ClearDiskCache
   #TextGeoLocationQuery
   #StringGeoLocationQuery
+  #DisableUILayer
 EndEnumeration
 
 ; Menu events
@@ -154,10 +155,13 @@ Procedure ResizeAll()
   ResizeGadget(#Text_2, WindowWidth(#Window_0)-170, #PB_Ignore, #PB_Ignore, #PB_Ignore)
   ResizeGadget(#Button_4, WindowWidth(#Window_0)-150, #PB_Ignore, #PB_Ignore, #PB_Ignore)
   ResizeGadget(#Button_5, WindowWidth(#Window_0)-100, #PB_Ignore, #PB_Ignore, #PB_Ignore)
+  
   ResizeGadget(#Text_3, WindowWidth(#Window_0)-170, #PB_Ignore, #PB_Ignore, #PB_Ignore)
-  ResizeGadget(#StringLatitude, WindowWidth(#Window_0)-120, #PB_Ignore, #PB_Ignore, #PB_Ignore)
-  ResizeGadget(#StringLongitude, WindowWidth(#Window_0)-120, #PB_Ignore, #PB_Ignore, #PB_Ignore)
+  ResizeGadget(#StringLatitude, WindowWidth(#Window_0)-110, #PB_Ignore, #PB_Ignore, #PB_Ignore)
   ResizeGadget(#Text_4, WindowWidth(#Window_0)-170, #PB_Ignore, #PB_Ignore, #PB_Ignore)
+  ResizeGadget(#StringLongitude, WindowWidth(#Window_0)-110, #PB_Ignore, #PB_Ignore, #PB_Ignore)
+  ResizeGadget(#DisableUILayer, WindowWidth(#Window_0)-170, #PB_Ignore, #PB_Ignore, #PB_Ignore)
+  
   ResizeGadget(#Gdt_AddMarker, WindowWidth(#Window_0)-170, #PB_Ignore, #PB_Ignore, #PB_Ignore)
   ResizeGadget(#Gdt_LoadGpx, WindowWidth(#Window_0)-170, #PB_Ignore, #PB_Ignore, #PB_Ignore)
   ResizeGadget(#Gdt_SaveGpx, WindowWidth(#Window_0)-170, #PB_Ignore, #PB_Ignore, #PB_Ignore)
@@ -174,7 +178,7 @@ EndProcedure
 
 
 ;- MAIN TEST
-If OpenWindow(#Window_0, 260, 225, 700, 571, "PBMap", #PB_Window_SystemMenu | #PB_Window_MinimizeGadget | #PB_Window_TitleBar | #PB_Window_ScreenCentered | #PB_Window_SizeGadget)
+If OpenWindow(#Window_0, 260, 225, 700, 571, "PBMap", #PB_Window_SystemMenu | #PB_Window_MinimizeGadget | #PB_Window_MaximizeGadget | #PB_Window_TitleBar | #PB_Window_ScreenCentered | #PB_Window_SizeGadget)
   
   LoadFont(0, "Arial", 12)
   LoadFont(1, "Arial", 12, #PB_Font_Bold)
@@ -190,10 +194,11 @@ If OpenWindow(#Window_0, 260, 225, 700, 571, "PBMap", #PB_Window_SystemMenu | #P
   TextGadget(#Text_2, 530, 120, 60, 15, "Zoom")
   ButtonGadget(#Button_4, 550, 140, 50, 30, " + ")        : SetGadgetFont(#Button_4, FontID(1)) 
   ButtonGadget(#Button_5, 600, 140, 50, 30, " - ")        : SetGadgetFont(#Button_5, FontID(1)) 
-  TextGadget(#Text_3, 530, 190, 50, 15, "Latitude ")
-  StringGadget(#StringLatitude, 580, 190, 90, 20, "")
-  TextGadget(#Text_4, 530, 210, 50, 15, "Longitude ")
-  StringGadget(#StringLongitude, 580, 210, 90, 20, "")
+  TextGadget(#Text_3, 530, 175, 70, 15, "Latitude ")
+  StringGadget(#StringLatitude, 590, 175, 90, 20, "")
+  TextGadget(#Text_4, 530, 195, 70, 15, "Longitude ")
+  StringGadget(#StringLongitude, 590, 195, 90, 20, "")
+  CheckBoxGadget(#DisableUILayer,530,216,150,20,"Disable UI Layer")
   ButtonGadget(#Gdt_AddMarker, 530, 240, 150, 30, "Add Marker")
   ButtonGadget(#Gdt_LoadGpx, 530, 270, 150, 30, "Load GPX")    
   ButtonGadget(#Gdt_SaveGpx, 530, 300, 150, 30, "Save GPX")    
@@ -268,6 +273,8 @@ If OpenWindow(#Window_0, 260, 225, 700, 571, "PBMap", #PB_Window_SystemMenu | #P
             PBMap::SetZoom(#Map, 1)
           Case #Button_5
             PBMap::SetZoom(#Map,  -1)
+          Case #DisableUILayer
+            PBMap::SetDebugInfo(#Map,(1+GetGadgetState(#DisableUILayer))%2);PBMap\Options\ShowDebugInfos
           Case #Gdt_LoadGpx
             *Track = PBMap::LoadGpxFile(#Map, OpenFileRequester("Choose a file to load", "", "Gpx|*.gpx", 0))
             PBMap::SetTrackColour(#Map, *Track, RGBA(Random(255), Random(255), Random(255), 128))
@@ -372,8 +379,9 @@ EndIf
 
 
 ; IDE Options = PureBasic 6.00 LTS (Windows - x64)
-; CursorPosition = 39
-; Folding = A5
+; CursorPosition = 180
+; FirstLine = 130
+; Folding = A7
 ; EnableThread
 ; EnableXP
 ; DPIAware

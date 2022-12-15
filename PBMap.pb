@@ -72,8 +72,6 @@ DeclareModule PBMap
   #PB_MAP_RETRY  = #PB_EventType_FirstCustomValue + 2
   #PB_MAP_TILE_CLEANUP = #PB_EventType_FirstCustomValue + 3
   
-  #ShowOSMCopyright = #True
-  
   ;-*** Public structures
   Structure GeographicCoordinates
     Longitude.d
@@ -146,7 +144,8 @@ DeclareModule PBMap
   Declare Error(MapGadget.i, msg.s)
   Declare Refresh(MapGadget.i)
   Declare.i ClearDiskCache(MapGadget.i)
-
+  Declare SetDebugInfo(MapGadget.i, EnableDebugInfo.i)
+  
 EndDeclareModule
 
 Module PBMap 
@@ -239,6 +238,7 @@ Module PBMap
     ShowDebugInfos.i
     ShowScale.i
     ShowTrack.i
+    ShowCopyRight.i
     ShowTrackKms.i
     ShowMarkers.i
     ShowPointer.i
@@ -766,6 +766,8 @@ Module PBMap
         *PBMap\Options\MaxThreads = Val(Value)
       Case "maxdownloadslots"
         *PBMap\Options\MaxDownloadSlots = Val(Value)
+      Case "showcopyright"
+        *PBMap\Options\ShowCopyRight =  Val(Value)
       Case "tilelifetime"
         *PBMap\Options\TileLifetime =  Val(Value)
       Case "verbose"
@@ -852,6 +854,8 @@ Module PBMap
           ProcedureReturn GetBoolString(\WheelMouseRelative)
         Case "showdegrees"
           ProcedureReturn GetBoolString(\ShowDegrees)
+        Case "showcopyright"
+          ProcedureReturn StrU(\ShowCopyRight)
         Case "showdebuginfos"
           ProcedureReturn GetBoolString(\ShowDebugInfos)
         Case "showscale"
@@ -976,7 +980,7 @@ Module PBMap
       \HDDCachePath       = ReadPreferenceString("TilesCachePath", GetTemporaryDirectory() + "PBMap" + slash)
       PreferenceGroup("OPTIONS")   
       \WheelMouseRelative = ReadPreferenceInteger("WheelMouseRelative", #True)
-      \MaxMemCache        = ReadPreferenceInteger("MaxMemCache", 20480) ; 20 MiB, about 80 tiles in memory
+      \MaxMemCache        = ReadPreferenceInteger("MaxMemCache", 400000) ; 400 MByte
       \MaxThreads         = ReadPreferenceInteger("MaxThreads", 16)
       \MaxDownloadSlots   = ReadPreferenceInteger("MaxDownloadSlots", 64)
       \TileLifetime       = ReadPreferenceInteger("TileLifetime", 1209600) ; about 2 weeks ;-1 = unlimited
@@ -1496,11 +1500,7 @@ Module PBMap
                 CacheFile = DirName + slash + Str(tiley) + ".png" 
             EndSelect          
           EndWith
-<<<<<<< Updated upstream
-=======
-          ;All Tiles are asked at once. Over and Over and Over until all were responded. Why not working of all the requests in parallel??
 
->>>>>>> Stashed changes
           *timg = GetTile(MapGadget, key, URL, CacheFile)
           
           If *timg And *timg\nImage
@@ -2095,7 +2095,7 @@ Module PBMap
         DrawTiles(MapGadget, *Drawing, *PBMap\LayersList()\Name)
       EndIf
       If *PBMap\LayersList()\LayerType = 0 ; OSM
-        OSMCopyright = #ShowOSMCopyright
+        OSMCopyright = *PBMap\Options\ShowCopyRight
       EndIf
     Next   
     If *PBMap\Options\ShowTrack
@@ -2157,6 +2157,15 @@ Module PBMap
     Protected *PBMap.PBMap = PBMaps(Str(MapGadget))
     ProcedureReturn GetCanvasPixelLat(MapGadget.i, GetGadgetAttribute(*PBMap\Gadget, #PB_Canvas_MouseY))
   EndProcedure 
+  
+  Procedure SetDebugInfo(MapGadget.i, EnableDebugInfo.i)
+    Protected *PBMap.PBMap = PBMaps(Str(MapGadget))
+    *PBMap\Options\ShowDebugInfos = EnableDebugInfo
+    *PBMap\Options\ShowCopyRight = EnableDebugInfo
+    *PBMap\Options\ShowDegrees = EnableDebugInfo
+    *PBMap\Options\ShowPointer = EnableDebugInfo
+    *PBMap\Redraw = #True
+  EndProcedure
   
   Procedure SetLocation(MapGadget.i, latitude.d, longitude.d, Zoom = -1, Mode.i = #PB_Absolute)
     Protected *PBMap.PBMap = PBMaps(Str(MapGadget))
@@ -2813,7 +2822,7 @@ Module PBMap
     SetLocation(MapGadget, 0, 0)    
     *PBMap\Gadget = MapGadget
     BindGadgetEvent(*PBMap\Gadget, @CanvasEvents())
-    AddWindowTimer(*PBMap\Window, *PBMap\Timer, *PBMap\Options\TimerInterval)
+    AddWindowTimer(*PBMap\Window, *PBMap\Timer, *PBMap\Options\TimerInterval);FIXME crashes when switching off the window on start
     BindEvent(#PB_Event_Timer, @TimerEvents())
     *PBMap\Drawing\RadiusX = DesktopScaledX(GadgetWidth(*PBMap\Gadget)) / 2
     *PBMap\Drawing\RadiusY = DesktopScaledY(GadgetHeight(*PBMap\Gadget)) / 2
@@ -2858,7 +2867,7 @@ Module PBMap
           DeleteMapElement(*PBMap\MemCache\Images())
         EndIf
       Next
-      Delay(10)
+      Delay(2)
     Until MapSize(*PBMap\MemCache\Images()) = 0
     RemoveWindowTimer(*PBMap\Window, *PBMap\Timer)
     UnbindGadgetEvent(*PBMap\Gadget, @CanvasEvents())
@@ -2878,19 +2887,17 @@ Module PBMap
 
 EndModule
 
-<<<<<<< Updated upstream
- 
 
-
-; IDE Options = PureBasic 6.00 LTS (Windows - x64)
-; CursorPosition = 1292
-; FirstLine = 576
-; Folding = KAAAAAAA5AgAgC5Aphn+
-=======
 ; IDE Options = PureBasic 6.00 LTS (Windows - x64)
 ; CursorPosition = 1290
 ; FirstLine = 1278
 ; Folding = --------------------
->>>>>>> Stashed changes
 ; EnableThread
 ; EnableXP
+; IDE Options = PureBasic 6.00 LTS (Windows - x64)
+; CursorPosition = 982
+; FirstLine = 964
+; Folding = -------------D+-----
+; EnableThread
+; EnableXP
+; DPIAware
