@@ -988,6 +988,7 @@ Module PBMap
       \Warning            = ReadPreferenceInteger("Warning", #False)
       \ShowDegrees        = ReadPreferenceInteger("ShowDegrees", #False)
       \ShowDebugInfos     = ReadPreferenceInteger("ShowDebugInfos", #False)
+      \ShowCopyRight      = ReadPreferenceInteger("ShowCopyRight", #True)
       \ShowScale          = ReadPreferenceInteger("ShowScale", #False)
       \ShowZoom           = ReadPreferenceInteger("ShowZoom", #True)
       \ShowMarkers        = ReadPreferenceInteger("ShowMarkers", #True)
@@ -2044,7 +2045,7 @@ Module PBMap
     Protected Text.s = "© OpenStreetMap contributors"
     VectorFont(FontID(*PBMap\StandardFont), 12)
     VectorSourceColor(RGBA(0, 0, 0, 80))
-    MovePathCursor(DesktopScaledX(GadgetWidth(*PBMap\Gadget)) - VectorTextWidth(Text), GadgetHeight(*PBMap\Gadget) - 20)
+    MovePathCursor(DesktopScaledX(GadgetWidth(*PBMap\Gadget)) - VectorTextWidth(Text), DesktopScaledY(GadgetHeight(*PBMap\Gadget)) - 20)
     DrawVectorText(Text)
   EndProcedure
   
@@ -2160,12 +2161,22 @@ Module PBMap
   
   Procedure SetDebugInfo(MapGadget.i, EnableDebugInfo.i)
     Protected *PBMap.PBMap = PBMaps(Str(MapGadget))
-    *PBMap\Options\ShowDebugInfos = EnableDebugInfo
-    *PBMap\Options\ShowCopyRight = EnableDebugInfo
-    *PBMap\Options\ShowDegrees = EnableDebugInfo
-    *PBMap\Options\ShowPointer = EnableDebugInfo
-    *PBMap\Options\ShowZoom = EnableDebugInfo
-    *PBMap\Options\ShowScale = EnableDebugInfo
+    With *PBMap\Options
+      
+      \ShowDegrees        = EnableDebugInfo
+      \ShowDebugInfos     = EnableDebugInfo
+      \ShowScale          = EnableDebugInfo
+      \ShowZoom           = EnableDebugInfo
+      \ShowMarkers        = EnableDebugInfo
+      \ShowPointer        = EnableDebugInfo
+      \ShowTrack          = EnableDebugInfo
+      \ShowTrackSelection = EnableDebugInfo
+      \ShowTrackKms       = EnableDebugInfo
+      \ShowMarkersNb      = EnableDebugInfo
+      \ShowMarkersLegend  = EnableDebugInfo
+      \ShowCopyRight      = EnableDebugInfo
+    EndWith
+    
     *PBMap\Redraw = #True
   EndProcedure
   
@@ -2897,9 +2908,9 @@ EndModule
 ; EnableThread
 ; EnableXP
 ; IDE Options = PureBasic 6.00 LTS (Windows - x64)
-; CursorPosition = 2167
-; FirstLine = 2133
-; Folding = -------------D+-----
+; CursorPosition = 990
+; FirstLine = 694
+; Folding = KAAAAoDAoAAAADCAAAD+
 ; EnableThread
 ; EnableXP
 ; DPIAware
