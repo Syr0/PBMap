@@ -33,8 +33,6 @@
 
 XIncludeFile "PBMap.pb"
 
-InitNetwork()
-
 CompilerIf #PB_Compiler_Thread = #False
   MessageRequester("Warning !", "You must enable 'Create ThreadSafe Executable' in compiler options", #PB_MessageRequester_Ok )
   End
@@ -373,8 +371,9 @@ If OpenWindow(#Window_0, 260, 225, 700, 571, "PBMap", #PB_Window_SystemMenu | #P
 EndIf
 
 
-; IDE Options = PureBasic 5.73 LTS (Windows - x64)
-; CursorPosition = 7
-; Folding = --
+; IDE Options = PureBasic 6.00 LTS (Windows - x64)
+; CursorPosition = 39
+; Folding = A5
 ; EnableThread
 ; EnableXP
+; DPIAware
