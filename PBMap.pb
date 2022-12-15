@@ -2164,6 +2164,8 @@ Module PBMap
     *PBMap\Options\ShowCopyRight = EnableDebugInfo
     *PBMap\Options\ShowDegrees = EnableDebugInfo
     *PBMap\Options\ShowPointer = EnableDebugInfo
+    *PBMap\Options\ShowZoom = EnableDebugInfo
+    *PBMap\Options\ShowScale = EnableDebugInfo
     *PBMap\Redraw = #True
   EndProcedure
   
@@ -2895,8 +2897,8 @@ EndModule
 ; EnableThread
 ; EnableXP
 ; IDE Options = PureBasic 6.00 LTS (Windows - x64)
-; CursorPosition = 982
-; FirstLine = 964
+; CursorPosition = 2167
+; FirstLine = 2133
 ; Folding = -------------D+-----
 ; EnableThread
 ; EnableXP
